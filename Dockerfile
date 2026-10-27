@@ -17,9 +17,11 @@ ENV DEBIAN_FRONTEND=noninteractive \
 
 # git: buildSrc/src/main/kotlin/versions.gradle.kts shells out to `git log` for versioning.
 # curl/jq/zip/unzip: used across ci/*.yml scripts. openssh-client: used by deploy*.yml.
+# libatomic1: the Node.js binary the Kotlin Wasm/JS Gradle plugin downloads for browser builds
+# (webpack, yarn) fails to start without libatomic.so.1.
 RUN apt-get update -qq && \
     apt-get install -y -qq --no-install-recommends \
-      git curl wget unzip zip jq openssh-client locales ca-certificates && \
+      git curl wget unzip zip jq openssh-client locales ca-certificates libatomic1 && \
     locale-gen en_US.UTF-8 && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
